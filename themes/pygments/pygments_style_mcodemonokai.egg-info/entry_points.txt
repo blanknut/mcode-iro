@@ -1,0 +1,4 @@
+
+    [pygments.styles]
+    mcodemonokai = mcodemonokai.mcodeMonokai:McodeMonokaiStyle
+    

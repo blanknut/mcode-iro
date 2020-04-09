@@ -1,0 +1,31 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin : 'c'
+
+def makeExeName(pathName) {
+    return pathName + (Os.isFamily(Os.FAMILY_WINDOWS) ? '.exe' : '')
+}
+
+task run(type:Exec, dependsOn: ':build') {
+    doFirst {
+         standardOutput = new FileOutputStream("${buildDir}/mcodeiro.txt")
+    }
+    workingDir project.buildDir
+    commandLine makeExeName("exe/mcodeiro/mcodeiro")
+}
+
+model {
+    components {
+        mcinstr(NativeLibrarySpec)
+        mcodeiro(NativeExecutableSpec) {
+            binaries.all {
+                lib library: 'mcinstr', linkage: 'static'
+            }
+        }
+        mcodecvs(NativeExecutableSpec) {
+            binaries.all {
+                lib library: 'mcinstr', linkage: 'static'
+            }
+        }
+    }
+}
